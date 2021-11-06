@@ -1,6 +1,6 @@
 import numpy as np
 
-def display_puzzle(puzzle):
+def display_puzzle(puzzle, orig_puzzle=None):
     """
     Display a given Sudoku puzzle to the console.
 
@@ -14,11 +14,14 @@ def display_puzzle(puzzle):
             if puzzle[y, x] == 0:
                 print("|   ", end='')
             else:
-                print(f"| {puzzle[y, x]} ", end='')
+                if not orig_puzzle is None and orig_puzzle[y, x] != 0:
+                    print(f"| \033[1m\033[95m{puzzle[y, x]}\033[0m ", end='')
+                else:
+                    print(f"| {puzzle[y, x]} ", end='')
         print("|\n" + "-" * 37)
 
 
-def load_from_file(puzzle_file="puzzle.txt"):
+def load_from_file(puzzle, puzzle_file="puzzle.txt"):
     """
     Load a Sudoku puzzle from a given filename
     and parse into a 9x9 2D array
@@ -26,8 +29,6 @@ def load_from_file(puzzle_file="puzzle.txt"):
     Keyword arguments:
     puzzle_file -- the file containing the Sudoku file
     """
-
-    puzzle = np.zeros((9,9), dtype='int16')
     f = open(puzzle_file, "r")
 
     for i in range(0,9):
@@ -54,14 +55,17 @@ def is_valid_spot(puzzle, value, row, column):
     squareX = column - (column % 3)
     squareY = row - (row % 3)
 
+    # Check all cells in the row for a duplicate
     for x in range(0, 9):
         if puzzle[row, x] == value:
             return False
     
+    # Check all cells in the column for a duplicate
     for y in range(0, 9):
         if puzzle[y, column] == value:
             return False
 
+    # Check all cells in the 3x3 square for a duplicate
     for sX in range(squareX, squareX+3):
         for sY in range(squareY, squareY+3):
             if puzzle[sY, sX] == value:
@@ -77,10 +81,12 @@ def solve_puzzle(puzzle):
     Keyword arguments:
     puzzle -- the 9x9 2D array containing the puzzle
     """
+
     for x in range(0, 9):
         for y in range (0, 9):
             if puzzle[y, x] == 0:
                 for val in range(1, 10):
+                    print(f"Testing row {x}, col {y} with value {val}\r", end="")
                     if is_valid_spot(puzzle, val, y, x):
                         puzzle[y, x] = val
                         if solve_puzzle(puzzle):
@@ -92,12 +98,19 @@ def solve_puzzle(puzzle):
 
 
 def main():
-    puzzle = load_from_file()
-    solve_puzzle(puzzle)
+    puzzle = np.zeros((9,9), dtype='int16')
 
-    print("\n\nSOLVED PUZZLE")
-    display_puzzle(puzzle)
-
+    #load_from_file(puzzle)
+    #load_from_file(puzzle, puzzle_file="puzzle1.txt")
+    load_from_file(puzzle, puzzle_file="puzzle_unsolveable.txt")
+    
+    solved_puzzle = np.copy(puzzle)
+    
+    if solve_puzzle(solved_puzzle):
+        print("\n\nSOLVED PUZZLE")
+        display_puzzle(solved_puzzle, puzzle)
+    else:
+        print("\n\nPUZZLE IS UNSOLVEABLE :(")
 
 if __name__ == "__main__":
     main()
