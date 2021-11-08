@@ -1,4 +1,6 @@
+import getopt
 import numpy as np
+import sys
 
 def display_puzzle(puzzle, orig_puzzle=None):
     """
@@ -97,12 +99,26 @@ def solve_puzzle(puzzle):
     return True
 
 
-def main():
+def main(argv):
     puzzle = np.zeros((9,9), dtype='int16')
+
+    puzzle_file = ""
+
+    try:
+        opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
+    except getopt.GetoptError:
+        print("SudokuSolver.py -i <puzzlefile>")
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print("SudokuSolver.py -i <puzzlefile>")
+            sys.exit()
+        elif opt in ("-i", "--ifile"):
+            puzzle_file = arg
 
     #load_from_file(puzzle)
     #load_from_file(puzzle, puzzle_file="puzzle1.txt")
-    load_from_file(puzzle, puzzle_file="puzzle_unsolveable.txt")
+    load_from_file(puzzle, puzzle_file)
     
     solved_puzzle = np.copy(puzzle)
     
@@ -113,4 +129,4 @@ def main():
         print("\n\nPUZZLE IS UNSOLVEABLE :(")
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])
