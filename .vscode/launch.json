@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": ["-i puzzle1.txt"]
+            "args": ["-i puzzle2.txt"]
         }
     ]
 }
