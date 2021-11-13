@@ -52,7 +52,6 @@ class SudokuSolver:
             for y in range (0, 9):
                 if self.sudokupuzzle.solved_puzzle[y][x] == 0:
                     for val in range(1, 10):
-                        #print(f"Testing row {x}, col {y} with value {val}\r", end="")
                         if self.is_valid_spot(val, y, x):
                             self.sudokupuzzle.solved_puzzle[y][x] = val
                             if self.solve():

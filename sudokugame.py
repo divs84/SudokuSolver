@@ -8,17 +8,27 @@ class SudokuGame:
 
     def __init__(self, argv):
         
+        puzzle_file = ""
+
         try:
             opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
         except getopt.GetoptError:
-            print("SudokuSolver.py -i <puzzlefile>")
+            self.display_help()
             sys.exit(2)
+
+        if len(opts) == 0:
+            self.display_help()
+            sys.exit()
+
         for opt, arg in opts:
             if opt == '-h':
-                print("SudokuSolver.py -i <puzzlefile>")
+                self.display_help()
                 sys.exit()
             elif opt in ("-i", "--ifile"):
                 puzzle_file = arg.strip()
+            else:
+                self.display_help()
+                sys.exit() 
 
         puzzle = SudokuPuzzle(self.load_from_file(puzzle_file))
 
@@ -53,6 +63,10 @@ class SudokuGame:
         else:
             print("\n\nPUZZLE IS UNSOLVEABLE :(")
 
+    def display_help(self):
+        print("usage: sudokugame.py -i <puzzlefile>")
+        print("\t-i <puzzlefile>: a comma-separated text file containing a Sudoku puzzle.")
+        print("\tZero (0) must be used in the puzzlefile to indicate a blank spot in the puzzle.")
 
 if __name__ == "__main__":
     game = SudokuGame(sys.argv[1:])
