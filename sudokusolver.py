@@ -1,64 +1,70 @@
+import getopt
 from sudokupuzzle import SudokuPuzzle
+import sys
 
 class SudokuSolver:
 
-    def __init__(self, puzzle: SudokuPuzzle):
-        self.sudokupuzzle = puzzle
+    def __init__(self, puzzle_file):
+        self.sudokupuzzle = SudokuPuzzle(self.load_from_file(puzzle_file))
+        print(f"\nPUZZLE\n{self.sudokupuzzle}\n")
 
 
-    def __str__(self):
-        return str(self.sudokupuzzle)
-
-
-    def is_valid_spot(self, value: int, row: int, column: int) -> bool:
+    def load_from_file(self, puzzle_file: str):
         """
-        Check if a specific spot within a given Sudoku puzzle
-        is valid.
+        Load a Sudoku puzzle from a given filename
+        and parse into a 9x9 2D array
 
         Keyword arguments:
-        value  -- the value (0-9) to validate in the specific Sudoku cell
-        row    -- the row of the Sudoku cell to validate
-        column -- the column of the Sudoku cell to validate
+        puzzle_file -- the filename containing the Sudoku file
         """
-        squareX = column - (column % 3)
-        squareY = row - (row % 3)
+        puzzle = []
 
-        # Check all cells in the row for a duplicate
-        for x in range(0, 9):
-            if self.sudokupuzzle.solved_puzzle[row][x] == value:
-                return False
+        f = open(puzzle_file, "r")
+
+        for i in range(0,9):
+            row = f.readline().strip().split(",")[0:9]
+            puzzle.append([int(i) for i in row])
         
-        # Check all cells in the column for a duplicate
-        for y in range(0, 9):
-            if self.sudokupuzzle.solved_puzzle[y][column] == value:
-                return False
+        return puzzle
 
-        # Check all cells in the 3x3 square for a duplicate
-        for sX in range(squareX, squareX+3):
-            for sY in range(squareY, squareY+3):
-                if self.sudokupuzzle.solved_puzzle[sY][sX] == value:
-                    return False
-
-        return True
+    
+    def complete_puzzle(self):
+        if self.sudokupuzzle.solve():
+            print(f"\nSOLVED PUZZLE\n{self.sudokupuzzle}\n")
+        else:
+            print("\nPUZZLE IS UNSOLVEABLE :(")
 
 
-    def solve(self):
-        """
-        Solve a given Sudoku puzzle.
+    @staticmethod
+    def display_help():
+        print("usage: python sudokusolver.py -i <puzzlefile>")
+        print("\t-i <puzzlefile>: a comma-separated text file containing a Sudoku puzzle.")
+        print("\tZero (0) must be used in the puzzlefile to indicate a blank spot in the puzzle.")
 
-        """
-        
-        for x in range(0, 9):
-            for y in range (0, 9):
-                if self.sudokupuzzle.solved_puzzle[y][x] == 0:
-                    for val in range(1, 10):
-                        if self.is_valid_spot(val, y, x):
-                            self.sudokupuzzle.solved_puzzle[y][x] = val
-                            if self.solve():
-                                return True
-                            else:
-                                self.sudokupuzzle.solved_puzzle[y][x] = 0
-                    return False
-        return True
+
+if __name__ == "__main__":
+
+    try:
+        opts, args = getopt.getopt(sys.argv[1:],"hi:o:",["ifile=","ofile="])
+    except getopt.GetoptError:
+        SudokuSolver.display_help()
+        sys.exit(2)
+
+    if len(opts) == 0:
+        SudokuSolver.display_help()
+        sys.exit()
+
+    for opt, arg in opts:
+        if opt == '-h':
+            SudokuSolver.display_help()
+            sys.exit()
+        elif opt in ("-i", "--ifile"):
+            puzzle_file = arg.strip()
+        else:
+            SudokuSolver.display_help()
+            sys.exit() 
+
+    sudoku = SudokuSolver(puzzle_file)
+    sudoku.complete_puzzle()
 
 
