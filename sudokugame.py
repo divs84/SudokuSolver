@@ -1,5 +1,4 @@
 import getopt
-import numpy as np
 from sudokupuzzle import SudokuPuzzle
 from sudokusolver import SudokuSolver
 import sys
