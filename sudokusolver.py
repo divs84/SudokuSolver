@@ -65,10 +65,7 @@ def main():
         sys.exit()
 
     for opt, arg in opts:
-        if opt == '-h':
-            SudokuSolver.display_help()
-            sys.exit()
-        elif opt in ("-i", "--ifile"):
+        if opt in ("-i", "--ifile"):
             puzzle_file = arg.strip()
         else:
             SudokuSolver.display_help()

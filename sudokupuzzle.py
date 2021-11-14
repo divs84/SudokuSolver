@@ -76,8 +76,8 @@ class SudokuPuzzle:
 
         """
         
-        for x in range(0, 9):
-            for y in range (0, 9):
+        for y in range(0, 9):
+            for x in range (0, 9):
                 if self.solved_puzzle[y][x] == 0:
                     for val in range(1, 10):
                         if self.is_valid_spot(val, y, x):
