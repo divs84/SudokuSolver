@@ -52,5 +52,9 @@ docs/_build/
 # Python Environment
 env
 
-# Visual Studio Code Settings
-.vscode
+### Visual Studio Code ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json

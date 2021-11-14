@@ -53,8 +53,7 @@ class SudokuSolver:
         print("\tZero (0) must be used in the puzzlefile to indicate a blank spot in the puzzle.")
 
 
-if __name__ == "__main__":
-
+def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:],"hi:",["ifile="])
     except getopt.GetoptError:
@@ -77,5 +76,10 @@ if __name__ == "__main__":
 
     sudoku = SudokuSolver(puzzle_file)
     sudoku.complete_puzzle()
+
+
+if __name__ == "__main__":
+    main()
+    
 
 
