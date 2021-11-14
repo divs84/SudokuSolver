@@ -5,23 +5,35 @@ class SudokuPuzzle:
     def __init__(self, puzzle: List):
         self.original_puzzle = puzzle.copy()
         self.solved_puzzle = puzzle.copy()
+        self.moves_to_solve = 0
 
 
     def __str__(self):
         strs = ""
         for y in range(0, 9):
+            # Only draw boundaries around the 3x3 squares to illustrate
+            # where they are.
             if y % 3 == 0:
                 strs += "-" * 25 + "\n"
+
             row = ""
             for x in range(0, 9):
+                # Only draw boundaries around the 3x3 squares to illustrate
+                # where they are.
                 if x % 3 == 0:
                     row += "| "
+                
+                # Replace 0s in the list with blanks
                 if self.solved_puzzle[y][x] == 0:
                     row += f"{'':<2}"
                 else:
                     row += f"{self.solved_puzzle[y][x]:<2}"
+
             strs += row + "|\n"
         strs += "-" * 25
+
+        if(self.moves_to_solve > 0):
+            strs += f"\nSolved in {self.moves_to_solve} moves.\n"
 
         return strs
 
@@ -70,6 +82,7 @@ class SudokuPuzzle:
                     for val in range(1, 10):
                         if self.is_valid_spot(val, y, x):
                             self.solved_puzzle[y][x] = val
+                            self.moves_to_solve += 1
                             if self.solve():
                                 return True
                             else:

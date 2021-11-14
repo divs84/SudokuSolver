@@ -21,9 +21,20 @@ class SudokuSolver:
 
         f = open(puzzle_file, "r")
 
-        for i in range(0,9):
-            row = f.readline().strip().split(",")[0:9]
-            puzzle.append([int(i) for i in row])
+        for idy, line in enumerate(f.readlines()):
+            row = line.strip().split(",")
+            
+            if idy > 8:
+                raise IndexError(f"The puzzle is expected to be 9 rows, but {puzzle_file} contains more than {idy+1} rows.")
+
+            if len(row) != 9:
+                raise IndexError(f"The puzzle is expected to be 9 columns, but {puzzle_file} contains {len(row)} columns on row {idy+1}.")          
+
+            for idx, val in enumerate(row):
+                if not val.isnumeric() or (int(val) < 0 or int(val) > 9):
+                    raise IndexError(f"The puzzle is expected to contain only numbers 0-9, but found '{val}' in row {idy+1}, column {idx+1}.")
+
+            puzzle.append([int(x) for x in row])
         
         return puzzle
 
@@ -45,7 +56,7 @@ class SudokuSolver:
 if __name__ == "__main__":
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:],"hi:o:",["ifile=","ofile="])
+        opts, args = getopt.getopt(sys.argv[1:],"hi:",["ifile="])
     except getopt.GetoptError:
         SudokuSolver.display_help()
         sys.exit(2)
