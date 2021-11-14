@@ -8,10 +8,10 @@ python sudokusolver.py -i <puzzlefile>
 
 ## Puzzle File
 The program expects the puzzle file in a specific format to work properly:
-*All values are comma-separated.
-*One line in the file corresponds to one row in the puzzle.
-*Must have exactly 9 comma-separated values on each line, and 9 lines in the file.
-*Any blank cells in the puzzle are to be filled in with a zero (0).
+* All values are comma-separated.
+* One line in the file corresponds to one row in the puzzle.
+* Must have exactly 9 comma-separated values on each line, and 9 lines in the file.
+* Any blank cells in the puzzle are to be filled in with a zero (0).
 
 Here is an example layout of a puzzle following the rules described above:
 ```bash
@@ -26,4 +26,4 @@ Here is an example layout of a puzzle following the rules described above:
 0,0,0,0,8,0,0,7,9
 ```
 
-Additional example puzzle files can be found in the __puzzles__ folder of this project.
+Additional example puzzle files can be found in the _puzzles_ folder of this project.
