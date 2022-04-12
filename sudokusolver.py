@@ -4,12 +4,12 @@ import sys
 
 class SudokuSolver:
 
-    def __init__(self, puzzle_file):
+    def __init__(self, puzzle_file: str) -> None:
         self.sudokupuzzle = SudokuPuzzle(self.load_from_file(puzzle_file))
         print(f"\nPUZZLE\n{self.sudokupuzzle}\n")
 
 
-    def load_from_file(self, puzzle_file: str):
+    def load_from_file(self, puzzle_file: str) -> list:
         """
         Load a Sudoku puzzle from a given filename
         and parse into a 9x9 2D array
@@ -39,29 +39,28 @@ class SudokuSolver:
         return puzzle
 
     
-    def complete_puzzle(self):
+    def complete_puzzle(self) -> None:
         if self.sudokupuzzle.solve():
             print(f"\nSOLVED PUZZLE\n{self.sudokupuzzle}\n")
         else:
             print("\nPUZZLE IS UNSOLVEABLE :(")
 
 
-    @staticmethod
-    def display_help():
-        print("usage: python sudokusolver.py -i <puzzlefile>")
-        print("\t-i <puzzlefile>: a comma-separated text file containing a Sudoku puzzle.")
-        print("\tZero (0) must be used in the puzzlefile to indicate a blank spot in the puzzle.")
+def display_help():
+    print("usage: python sudokusolver.py -i <puzzlefile>")
+    print("\t-i <puzzlefile>: a comma-separated text file containing a Sudoku puzzle.")
+    print("\tZero (0) must be used in the puzzlefile to indicate a blank spot in the puzzle.")
 
 
 def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:],"hi:",["ifile="])
     except getopt.GetoptError:
-        SudokuSolver.display_help()
+        display_help()
         sys.exit(2)
 
     if len(opts) == 0:
-        SudokuSolver.display_help()
+        display_help()
         sys.exit()
 
     for opt, arg in opts:

@@ -1,14 +1,17 @@
 from typing import List
 
 class SudokuPuzzle:
+    """Class containing the Sudoku puzzle to solve."""
     
-    def __init__(self, puzzle: List):
+    def __init__(self, puzzle: List) -> None:
+        """ Initialize the Sudoku puzzle. """
         self.original_puzzle = puzzle.copy()
         self.solved_puzzle = puzzle.copy()
         self.moves_to_solve = 0
 
 
-    def __str__(self):
+    def __str__(self) -> str:
+        """Convert the Sudoku puzzle to a string."""
         strs = ""
         for y in range(0, 9):
             # Only draw boundaries around the 3x3 squares to illustrate
@@ -70,11 +73,8 @@ class SudokuPuzzle:
         return True
 
 
-    def solve(self):
-        """
-        Solve a given Sudoku puzzle.
-
-        """
+    def solve(self) -> bool:
+        """Solve a given Sudoku puzzle."""
         
         for y in range(0, 9):
             for x in range (0, 9):
